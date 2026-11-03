@@ -51,7 +51,7 @@ O sistema permite que diferentes projetos sejam cadastrados no banco de dados, c
 ### Pré-requisitos
 
 - [Node.js](https://nodejs.org/) (versão LTS mais recente)
-- [MySQL](https://www.mysql.com/) instalado e em execução
+- [Oracle](https://www.oracle.com/) instalado e em execução
 - Git
 
 ### Passo a passo
