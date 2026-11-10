@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fluxo · Protótipo PI II</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="screen-projects">
+  <div id="login" class="login-screen hidden">
+    <div class="login-brand">
+      <div class="brand-mark">◆</div><span>FLUXO</span>
+      <p>Organize as demandas do seu time.</p>
+      <small>Trabalho de PI II - Time 27</small>
+    </div>
+    <form id="login-form" class="login-card">
+      <h1>Bem-vindo de volta</h1><p>Entre na sua conta para continuar.</p>
+      <label>E-mail<input type="email" placeholder="seuemail@empresa.com" required></label>
+      <label>Senha<input type="password" placeholder="••••••••" required></label>
+      <button class="btn primary full">Entrar</button>
+      <small>Protótipo: o login ainda não funciona de verdade.</small>
+    </form>
+  </div>
+
+  <div id="app" class="layout">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">◆</div><div><b>FLUXO</b><small>CONTROLE DE DEMANDAS</small></div></div>
+      <div class="nav-label">WORKSPACE</div>
+      <button class="nav-item active" data-page="dashboard"><span>▦</span> Dashboard</button>
+      <button class="nav-item" data-page="demands"><span>☷</span> Demandas</button>
+      <button class="nav-item" data-page="kanban"><span>▤</span> Quadro Kanban</button>
+      <div class="nav-label">GERENCIAMENTO</div>
+      <button class="nav-item" data-page="projects"><span>▣</span> Projetos e equipe</button>
+      <div class="sidebar-bottom">
+        <button class="nav-item" id="settings-btn"><span>⚙</span> Configurações</button>
+        <div class="profile"><div class="avatar">PG</div><div><b>Pedro Gomes</b><small>Administrador</small></div><span class="dots">•••</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="mobile-brand"><div class="brand-mark">◆</div><b>FLUXO</b></div>
+        <div class="trilha">Workspace <span>/</span> <b id="crumb">Dashboard</b></div>
+        <div class="top-actions"><button class="icon-btn" title="Pesquisar" id="top-search">⌕</button><div class="avatar small">PG</div></div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="page-heading"><div><p class="rotulo">VISÃO DO WORKSPACE</p><h1>Visão geral</h1><p>Acompanhe o desempenho dos seus projetos.</p></div></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Total de demandas</span><i>▦</i></div><strong>128</strong><small>Em todos os projetos</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Abertas</span><i>○</i></div><strong>22</strong><small class="muted">Aguardando início</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Em andamento</span><i>◷</i></div><strong>35</strong><small class="blue-text">Trabalho em execução</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Em revisão</span><i>⌕</i></div><strong>14</strong><small class="purple-text">Aguardando validação</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Concluídas</span><i>✓</i></div><strong>47</strong><small class="green-text">Finalizadas</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Canceladas</span><i>⊘</i></div><strong>9</strong><small class="red-text">Preservadas no histórico</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel"><div class="panel-heading"><div><h2>Demandas por prioridade</h2><p>Distribuição das demandas cadastradas</p></div><span class="etiqueta">128 demandas</span></div>
+            <div class="bar-chart">
+              <div class="bar-row"><span>Crítica</span><div class="bar-track"><i class="bar red" style="width:12%"></i></div><b>9</b></div>
+              <div class="bar-row"><span>Alta</span><div class="bar-track"><i class="bar orange" style="width:37%"></i></div><b>26</b></div>
+              <div class="bar-row"><span>Média</span><div class="bar-track"><i class="bar blue" style="width:90%"></i></div><b>55</b></div>
+              <div class="bar-row"><span>Baixa</span><div class="bar-track"><i class="bar slate" style="width:59%"></i></div><b>34</b></div>
+            </div>
+          </article>
+          <article class="panel"><div class="panel-heading"><div><h2>Demandas por tipo</h2><p>Classificação das atividades</p></div></div>
+            <div class="bar-chart"><div class="bar-row"><span>Tarefa</span><div class="bar-track"><i class="bar blue" style="width:44%"></i></div><b>53</b></div><div class="bar-row"><span>Defeito</span><div class="bar-track"><i class="bar red" style="width:19%"></i></div><b>25</b></div><div class="bar-row"><span>Melhoria</span><div class="bar-track"><i class="bar green" style="width:24%"></i></div><b>31</b></div><div class="bar-row"><span>Documentação</span><div class="bar-track"><i class="bar purple" style="width:13%"></i></div><b>16</b></div></div>
+          </article>
+        </div>
+        <div class="content-grid lower-grid">
+          <article class="panel"><div class="panel-heading"><div><h2>Demandas críticas em aberto</h2><p>Itens que precisam de atenção</p></div><span class="status danger">5 críticas</span></div>
+            <div class="mini-list"><div><div><b>Falha na autenticação</b><small>DEM-001 · Sistema Web</small></div><span class="priority critical">Crítica</span></div><div><div><b>Erro na integração da API</b><small>DEM-014 · Aplicativo Mobile</small></div><span class="priority critical">Crítica</span></div><div><div><b>Falha no banco de dados</b><small>DEM-022 · Sistema Web</small></div><span class="priority critical">Crítica</span></div></div>
+          </article>
+          <article class="panel"><div class="panel-heading"><div><h2>Próximas entregas</h2><p>Prazos que se aproximam</p></div><span class="status warning">3 próximas</span></div>
+            <div class="mini-list"><div><div><b>Atualização do sistema</b><small>DEM-002 · João Silva</small></div><time>08 nov.</time></div><div><div><b>Correção da API</b><small>DEM-014 · Maria Costa</small></div><time>09 nov.</time></div><div><div><b>Documentação técnica</b><small>DEM-018 · Pedro Gomes</small></div><time>10 nov.</time></div></div>
+          </article>
+        </div>
+        <p class="nota-demo">Números de exemplo só para testar o layout.</p>
+      </section>
+
+      <section class="page" id="page-demands">
+        <div class="page-heading"><div><p class="rotulo">WORKSPACE</p><h1>Demandas</h1><p>Gerencie e acompanhe todas as atividades.</p></div><button class="btn primary" data-go="form">＋ Nova demanda</button></div>
+        <div class="toolbar"><input id="search-demand" placeholder="⌕  Buscar por título ou descrição..."><select id="filter-status"><option value="">Todos os status</option><option>Aberta</option><option>Em andamento</option><option>Em revisão</option><option>Concluída</option><option>Cancelada</option></select><select id="filter-priority"><option value="">Todas prioridades</option><option>Crítica</option><option>Alta</option><option>Média</option><option>Baixa</option></select><select id="sort-demand"><option value="title">Ordenar: título</option><option value="created">Data de criação</option><option value="due">Prazo</option><option value="priority">Prioridade</option></select></div>
+        <div class="panel table-panel"><div class="table-summary"><b>Lista de demandas</b><span id="result-count">4 demandas de exemplo</span></div><div class="table-scroll"><table><thead><tr><th>ID / TÍTULO</th><th>TIPO</th><th>PRIORIDADE</th><th>STATUS</th><th>PROJETO</th><th>RESPONSÁVEL</th><th>CRIADA EM</th><th>PRAZO</th></tr></thead><tbody id="demand-rows"></tbody></table></div></div>
+        <p class="nota-demo">Dados de teste. A busca e os filtros rodam aqui mesmo, sem backend.</p>
+      </section>
+
+      <section class="page" id="page-kanban">
+        <div class="page-heading"><div><p class="rotulo">WORKSPACE</p><h1>Quadro Kanban</h1><p>Visualize o fluxo de trabalho das demandas.</p></div><button class="btn secondary" data-go="demands">☷ Ver listagem</button></div>
+        <div class="kanban" id="kanban-board"></div>
+        <p class="nota-demo">Arrastar os cartões ainda não funciona. As regras de status ficam no backend depois.</p>
+      </section>
+
+      <section class="page" id="page-form">
+        <div class="page-heading"><div><p class="rotulo">DEMANDAS / CADASTRO</p><h1 id="form-title">Nova demanda</h1><p>Preencha as informações para registrar uma atividade.</p></div><button class="btn secondary" data-go="demands">← Voltar</button></div>
+        <form id="demand-form" class="panel form-panel">
+          <div class="form-grid">
+            <label class="span-2">Título da demanda *<input id="f-title" required placeholder="Ex.: Corrigir erro de autenticação"></label>
+            <label class="span-2">Descrição *<textarea id="f-description" required rows="4" placeholder="Descreva os detalhes da demanda..."></textarea></label>
+            <label>Projeto *<select id="f-project" required><option value="">Selecione um projeto</option><option>Sistema Web</option><option>Aplicativo Mobile</option></select></label>
+            <label>Tipo *<select id="f-type" required><option value="">Selecione o tipo</option><option>Tarefa</option><option>Defeito</option><option>Melhoria</option><option>Documentação</option></select></label>
+            <label>Prioridade *<select id="f-priority" required><option value="">Selecione a prioridade</option><option>Crítica</option><option>Alta</option><option>Média</option><option>Baixa</option></select></label>
+            <label>Responsável (opcional)<select id="f-owner"><option value="">Não atribuído</option><option>João Silva</option><option>Maria Costa</option><option>Pedro Gomes</option><option>Ana Lima</option></select></label>
+            <label>Prazo de finalização (opcional)<input id="f-due" type="date"><small class="field-help">O prazo pode ficar vazio e ser definido depois.</small></label>
+          </div>
+          <div class="form-foot"><span class="field-help">* Campos obrigatórios · Status inicial: Aberta</span><div><button type="button" class="btn secondary" data-go="demands">Cancelar</button><button class="btn primary">Salvar demanda</button></div></div>
+        </form>
+      </section>
+
+      <section class="page" id="page-detail">
+        <div class="page-heading"><div><p class="rotulo">DEMANDAS / <span id="detail-id">DEM-002</span></p><h1 id="detail-title">Implementar tela de perfil</h1><p id="detail-subtitle">Criada em 03/11/2026 · Atualizada em 06/11/2026</p></div><div><button class="btn secondary" id="edit-demand">✎ Editar</button><button class="btn danger-outline" id="cancel-demand">Cancelar demanda</button></div></div>
+        <div class="detail-grid"><article class="panel detail-main"><div class="tag-row"><span id="detail-status" class="status info">Em andamento</span><span id="detail-priority" class="priority high">Alta</span><span id="detail-type" class="status neutral">Tarefa</span></div><h2>Descrição</h2><p id="detail-description">Desenvolver uma tela de perfil de usuário permitindo visualizar e atualizar informações pessoais dentro da plataforma.</p><div class="detail-meta"><div><small>PROJETO</small><b id="detail-project">Sistema Web</b></div><div><small>RESPONSÁVEL</small><b id="detail-owner">João Silva</b></div><div><small>PRAZO FINAL</small><b id="detail-due">12/11/2026</b></div><div><small>CRIADA EM</small><b id="detail-created">03/11/2026</b></div></div><h2>Atualizar status</h2><div class="status-actions"><button class="btn secondary" data-status="Em andamento">Em andamento</button><button class="btn secondary" data-status="Em revisão">Enviar para revisão</button><button class="btn secondary" data-status="Concluída">Concluir</button></div><p class="field-help">Só algumas transições de status são permitidas pelas regras do trabalho.</p></article>
+        <aside class="detail-side"><article class="panel"><h2>Comentários</h2><form id="comment-form"><textarea id="comment-text" rows="3" placeholder="Escreva um comentário..." required></textarea><button class="btn primary full">Adicionar comentário</button></form><div id="comments" class="comments"><div class="comment"><div class="avatar">JS</div><div><b>João Silva</b><small>06/11/2026 · 14:30</small><p>A implementação está em andamento. Estou finalizando os componentes do formulário.</p></div></div></div></article><article class="panel"><h2>Histórico de alterações</h2><div id="history" class="history"><div><i></i><b>Status alterado</b><p>Aberta → Em andamento</p><small>João Silva · 04/11/2026</small></div><div><i></i><b>Responsável atribuído</b><p>João Silva</p><small>Pedro Gomes · 03/11/2026</small></div><div><i></i><b>Demanda criada</b><p>Status inicial: Aberta</p><small>Pedro Gomes · 03/11/2026</small></div></div></article></aside></div>
+      </section>
+
+      <section class="page active" id="page-projects">
+        <div class="page-heading"><div><p class="rotulo">GERENCIAMENTO</p><h1>Projetos e equipe</h1><p>Consulte os projetos e os membros vinculados.</p></div></div>
+        <div class="project-grid"><article class="panel project-card"><div class="project-icon">⌘</div><span class="status success">Ativo</span><h2>Sistema Web</h2><small>PROJ-001 · Desenvolvimento</small><div class="progress-label"><span>Demandas concluídas</span><b>64%</b></div><div class="progress"><i style="width:64%"></i></div><p>72 demandas cadastradas</p></article><article class="panel project-card"><div class="project-icon">▣</div><span class="status success">Ativo</span><h2>Aplicativo Mobile</h2><small>PROJ-002 · Desenvolvimento</small><div class="progress-label"><span>Demandas concluídas</span><b>48%</b></div><div class="progress"><i style="width:48%"></i></div><p>56 demandas cadastradas</p></article></div>
+        <article class="panel team-panel"><div class="panel-heading"><div><h2>Membros da equipe</h2><p>Usuários previamente cadastrados</p></div><span class="etiqueta">4 membros</span></div><div class="team-list"><div><div class="avatar">PG</div><b>Pedro Gomes</b><span>Administrador</span><span class="status success">Ativo</span></div><div><div class="avatar purple">MC</div><b>Maria Costa</b><span>Líder de Projeto</span><span class="status success">Ativo</span></div><div><div class="avatar green">JS</div><b>João Silva</b><span>Membro da Equipe</span><span class="status success">Ativo</span></div><div><div class="avatar orange">AL</div><b>Ana Lima</b><span>Membro da Equipe</span><span class="status success">Ativo</span></div></div></article>
+      </section>
+      <footer>FLUXO <span>·</span> Protótipo acadêmico de PI II <span>·</span> Time 27</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

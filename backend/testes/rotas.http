@@ -1,0 +1,275 @@
+# testes/rotas.http — PI2 / Time 27
+# Autor: Equipe PI-II TIME-27
+#
+# Testes das rotas da Reunião 4. Para usar, instale a extensão
+# "REST Client" no VS Code, suba o servidor (npm run dev dentro
+# de backend) e clique em "Send Request" em cima de cada requisição.
+# Os testes marcados com "(erro)" devem devolver 400, 401 ou 404.
+
+@host = http://localhost:3000
+
+### ================================================ Reunião 3 (mantidas)
+
+# resposta simples para conferir que o servidor esta no ar
+GET {{host}}/
+
+###
+
+# status do servidor
+GET {{host}}/api/status
+
+### ======================================== Murilo Passini (01 Login)
+
+# login com usuario e senha corretos (retorna 200)
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza@fluxo.com",
+    "senha": "Admin@2026"
+}
+
+###
+
+# login sem a senha (erro 400)
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza@fluxo.com"
+}
+
+###
+
+# login com e-mail fora do formato (erro 400)
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza",
+    "senha": "Admin@2026"
+}
+
+###
+
+# login com senha errada (erro 401)
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza@fluxo.com",
+    "senha": "errada"
+}
+
+###
+
+# usuarios cadastrados, sem a senha (retorna 200)
+GET {{host}}/usuarios
+
+### ====================================== Filipe Sampaio (02 Dashboard)
+
+# resumo do painel: totais por status e prioridade,
+# criticas em aberto e proximas do prazo (retorna 200)
+GET {{host}}/dashboard
+
+### ====================================== Pietro Granzotti (03 Demandas)
+
+# todas as demandas (retorna 200)
+GET {{host}}/demandas
+
+###
+
+# filtro por status (retorna 200)
+GET {{host}}/demandas?status=Aberta
+
+###
+
+# filtro por prioridade (retorna 200)
+GET {{host}}/demandas?prioridade=Cr%C3%ADtica
+
+###
+
+# filtro por tipo (retorna 200)
+GET {{host}}/demandas?tipo=Documenta%C3%A7%C3%A3o
+
+###
+
+# filtro por responsavel (retorna 200)
+GET {{host}}/demandas?responsavel=Jo%C3%A3o%20Silva
+
+###
+
+# filtro por projeto (retorna 200)
+GET {{host}}/demandas?projeto=API%20de%20Integra%C3%A7%C3%A3o
+
+###
+
+# busca por texto no titulo ou na descricao (retorna 200)
+GET {{host}}/demandas?busca=autentica
+
+###
+
+# ordenacao por prioridade (Crítica primeiro)
+GET {{host}}/demandas?ordenar=prioridade
+
+###
+
+# ordenacao por criacao (mais recente primeiro)
+GET {{host}}/demandas?ordenar=criacao
+
+###
+
+# ordenacao por prazo (sem prazo no final)
+GET {{host}}/demandas?ordenar=prazo
+
+###
+
+# ordenacao pelo fluxo de status
+GET {{host}}/demandas?ordenar=status
+
+###
+
+# filtro com valor invalido (erro 400)
+GET {{host}}/demandas?status=Fechada
+
+###
+
+# ordenacao invalida (erro 400)
+GET {{host}}/demandas?ordenar=nome
+
+### =============================== Cauã Leite (04 Kanban e 05 Cadastro)
+
+# projetos cadastrados (retorna 200)
+GET {{host}}/projetos
+
+###
+
+# cadastro de demanda (retorna 201)
+POST {{host}}/demandas
+Content-Type: application/json
+
+{
+    "titulo": "Criar tela de ajuda do sistema",
+    "descricao": "Desenvolver uma tela de ajuda com as perguntas mais frequentes dos usuarios.",
+    "tipo": "Tarefa",
+    "prioridade": "Média",
+    "projeto": "Sistema Web",
+    "responsavel": "João Silva",
+    "prazo": "2026-12-20"
+}
+
+###
+
+# cadastro sem responsavel e sem prazo (retorna 201 como "Não atribuído")
+POST {{host}}/demandas
+Content-Type: application/json
+
+{
+    "titulo": "Revisar logotipo do aplicativo",
+    "descricao": "Avaliar o logotipo atual do aplicativo e propor ajustes.",
+    "tipo": "Melhoria",
+    "prioridade": "Baixa",
+    "projeto": "Aplicativo Mobile"
+}
+
+###
+
+# cadastro com titulo curto demais (erro 400)
+POST {{host}}/demandas
+Content-Type: application/json
+
+{
+    "titulo": "oi",
+    "descricao": "Descrição da demanda de teste.",
+    "tipo": "Tarefa",
+    "prioridade": "Média",
+    "projeto": "Sistema Web"
+}
+
+###
+
+# cadastro com projeto que nao existe (erro 400)
+POST {{host}}/demandas
+Content-Type: application/json
+
+{
+    "titulo": "Demanda de um projeto novo",
+    "descricao": "Descrição da demanda de teste.",
+    "tipo": "Tarefa",
+    "prioridade": "Média",
+    "projeto": "Projeto Inexistente"
+}
+
+###
+
+# cadastro com prazo impossível (erro 400)
+POST {{host}}/demandas
+Content-Type: application/json
+
+{
+    "titulo": "Demanda com prazo impossível",
+    "descricao": "Descrição da demanda de teste.",
+    "tipo": "Tarefa",
+    "prioridade": "Média",
+    "projeto": "Sistema Web",
+    "prazo": "2026-02-31"
+}
+
+### ============================ Nicholas de Castro (06 Detalhes e Comentários)
+
+# detalhes de uma demanda pelo id (retorna 200)
+GET {{host}}/demandas/DEM-001
+
+###
+
+# demanda que nao existe (erro 404)
+GET {{host}}/demandas/DEM-999
+
+###
+
+# comentarios de uma demanda (retorna 200)
+GET {{host}}/demandas/DEM-001/comentarios
+
+### ================================== Matheus Schiavinato (06 Comentários)
+
+# novo comentario na demanda (retorna 201)
+POST {{host}}/demandas/DEM-001/comentarios
+Content-Type: application/json
+
+{
+    "autor": "Ana Souza",
+    "texto": "Vamos acompanhar essa demanda na reunião de sexta."
+}
+
+###
+
+# comentario com autor nao cadastrado (erro 400)
+POST {{host}}/demandas/DEM-001/comentarios
+Content-Type: application/json
+
+{
+    "autor": "Fulano da Silva",
+    "texto": "Comentário de teste."
+}
+
+###
+
+# comentario com texto curto demais (erro 400)
+POST {{host}}/demandas/DEM-001/comentarios
+Content-Type: application/json
+
+{
+    "autor": "Ana Souza",
+    "texto": "oi"
+}
+
+###
+
+# comentario em demanda que nao existe (erro 404)
+POST {{host}}/demandas/DEM-999/comentarios
+Content-Type: application/json
+
+{
+    "autor": "Ana Souza",
+    "texto": "Comentário de teste."
+}

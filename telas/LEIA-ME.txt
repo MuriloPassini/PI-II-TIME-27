@@ -1,0 +1,5 @@
+FLUXO — TELAS INDIVIDUAIS
+
+Cada pasta contém index.html, styles.css e app.js próprios para a tela indicada. Abra index.html no navegador.
+
+Observação: os arquivos preservam o protótipo visual e os comportamentos demonstrativos. Não há backend, autenticação real ou persistência em banco. A estrutura HTML mantém componentes compartilhados do protótipo, enquanto o CSS de cada pasta isola a tela correspondente.

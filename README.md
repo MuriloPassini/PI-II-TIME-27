@@ -1,19 +1,23 @@
 # Sistema de Acompanhamento de Demandas de Desenvolvimento
 
-Projeto desenvolvido para o componente curricular **Projeto Integrador 2** do curso de **Engenharia de Software** da **Pontifícia Universidade Católica de Campinas (PUC-Campinas)** — 2026.
+> **Projeto Integrador II — Time 27 (PI-II-TIME-27)**  
+> **Curso:** Engenharia de Software  
+> **Instituição:** Pontifícia Universidade Católica de Campinas (PUC-Campinas)  
+> **Semestre / Ano:** 1º Semestre / 2026  
+> **Professora Orientadora:** [Prof.ª Renata Arantes](https://github.com/RenataArantes)
 
-O sistema é inspirado em ferramentas utilizadas por equipes de tecnologia para organizar tarefas, defeitos ("bugs") e melhorias de software, permitindo o cadastro de projetos e o acompanhamento completo do ciclo de vida de suas demandas.
+O **FLUXO** é o sistema de acompanhamento de demandas de desenvolvimento do time. Ele é inspirado em ferramentas utilizadas por equipes de tecnologia para organizar tarefas, defeitos ("bugs") e melhorias de software, permitindo o cadastro de projetos e o acompanhamento completo do ciclo de vida de suas demandas.
 
-## Equipe
+## Equipe (Time 27)
 
-| Integrante |
-|---|
-| Murilo Passini |
-| Filipe Sampaio |
-| Pietro Granzotti |
-| Cauã Leite |
-| Matheus Schiavinato |
-| Nicholas de Castro |
+| Integrante | Responsabilidade no Projeto |
+|---|---|
+| Murilo Passini | Autenticação / Login e Servidor Backend |
+| Filipe Sampaio | Dashboard e Métricas |
+| Pietro Granzotti | Listagem e Filtros de Demandas |
+| Cauã Leite | Quadro Kanban e Fluxo de Trabalho |
+| Matheus Schiavinato | Cadastro e Edição de Demandas |
+| Nicholas de Castro | Detalhes da Demanda e Ciclo de Vida |
 
 ## Sobre o projeto
 
@@ -40,9 +44,9 @@ O sistema permite que diferentes projetos sejam cadastrados no banco de dados, c
 
 ## Tecnologias utilizadas
 
-- **Frontend**: HTML5, CSS3, JavaScript (e Bootstrap para a interface responsiva)
+- **Frontend**: HTML5, CSS3 e JavaScript (protótipos das telas na pasta `telas/`)
 - **Backend**: Node.js (LTS), TypeScript e Express
-- **Banco de Dados**: Oracle
+- **Banco de Dados**: Oracle (planejado para as próximas etapas)
 - **Controle de versão**: Git e GitHub
 - **Gerenciamento de tarefas**: GitHub Projects
 
@@ -51,7 +55,6 @@ O sistema permite que diferentes projetos sejam cadastrados no banco de dados, c
 ### Pré-requisitos
 
 - [Node.js](https://nodejs.org/) (versão LTS mais recente)
-- [Oracle](https://www.oracle.com/) instalado e em execução
 - Git
 
 ### Passo a passo
@@ -68,28 +71,47 @@ O sistema permite que diferentes projetos sejam cadastrados no banco de dados, c
    npm install
    ```
 
-3. Configure as variáveis de ambiente (crie um arquivo `.env` na pasta `backend` com base no `.env.example`):
+3. Configure a porta do servidor (crie um arquivo `.env` na pasta `backend` com base no `.env.example`):
    ```env
-   DB_HOST=localhost
-   DB_USER=seu_usuario
-   DB_PASSWORD=sua_senha
-   DB_NAME=nome_do_banco
    PORT=3000
    ```
 
-4. Crie o banco de dados e execute o script de criação das tabelas (disponível em `backend/database`).
-
-5. Inicie o servidor backend:
+4. Inicie o servidor backend:
    ```bash
    npm run dev
    ```
 
-6. Instale as dependências do frontend (caso utilize um bundler) ou abra diretamente os arquivos estáticos:
+5. Com o servidor no ar, teste as rotas pelo navegador ou pelo arquivo `backend/testes/rotas.http` (extensão REST Client do VS Code).
+
+6. Para gerar e rodar a versão compilada em JavaScript:
    ```bash
-   cd ../frontend
-   npm install
-   npm run dev
+   npm run build
+   npm start
    ```
+
+7. As telas do protótipo ficam na pasta `telas/` e são abertas direto no navegador (basta abrir o `index.html` de cada uma). Nesta etapa elas ainda não consomem a API.
+
+## Rotas da API (Reunião 4)
+
+Nesta etapa o backend mantém os dados de teste em memória (sem banco de dados ainda) e expõe as rotas abaixo. As listas vêm no formato `{ "total": ..., "<recurso>": [...] }`, os cadastros no formato `{ "mensagem": ..., "<recurso>": {...} }` e os erros no formato `{ "erro": ..., "mensagem": ... }`.
+
+| Rota | Método | Descrição | Responsável |
+|---|---|---|---|
+| `/login` | POST | Autentica e-mail e senha e devolve os dados do usuário (sem a senha) | Murilo Passini |
+| `/usuarios` | GET | Lista os usuários cadastrados | Murilo Passini |
+| `/dashboard` | GET | Resumo do painel: totais por status e prioridade, críticas em aberto e próximas do prazo | Filipe Sampaio |
+| `/demandas` | GET | Lista demandas com filtros (status, prioridade, tipo, responsável, projeto), busca textual e ordenação | Pietro Granzotti |
+| `/demandas` | POST | Cadastra uma nova demanda (id, status inicial e datas gerados pelo servidor) | Cauã Leite |
+| `/projetos` | GET | Lista os projetos cadastrados | Cauã Leite |
+| `/demandas/:id` | GET | Detalha uma demanda pelo id | Nicholas de Castro |
+| `/demandas/:id/comentarios` | GET | Lista os comentários da demanda | Nicholas de Castro |
+| `/demandas/:id/comentarios` | POST | Adiciona um comentário na demanda (data e horário gerados pelo servidor) | Matheus Schiavinato |
+
+As rotas de verificação da Reunião 3 continuam válidas: `GET /` e `GET /api/status`.
+
+Exemplos de requisições prontos para execução (válidas e com erro) estão no arquivo `backend/testes/rotas.http`.
+
+> A persistência no banco Oracle e a integração das telas com a API estão planejadas para as próximas etapas do projeto.
 
 ## Controle de versão
 
