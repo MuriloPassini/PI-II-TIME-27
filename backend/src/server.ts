@@ -8,6 +8,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 
 import { iniciarBanco, fecharBanco, consultar } from './banco';
 import rotasLogin from './rotas/rotasLogin';
@@ -25,11 +26,20 @@ dotenv.config();
 const app = express();
 const PORTA = process.env.PORT || 3000;
 
+// Pasta das telas (HTML, CSS e JavaScript). Fica um nivel acima de
+// "backend", entao a partir de src/ ou de dist/ sao dois "..".
+const PASTA_TELAS = path.join(__dirname, '..', '..', 'telas');
+
 // Middlewares globais
 app.use(cors());
 app.use(express.json());
 
-// GET / - resposta simples para conferir que o servidor esta no ar
+// GET / - manda o navegador para a tela de login
+function redirecionarParaLogin(req: Request, res: Response): void {
+    res.redirect('/01-login/');
+}
+
+// GET /api - resposta simples para conferir que o servidor esta no ar
 function responderInicio(req: Request, res: Response): void {
     res.status(200).json({
         status: 'online',
@@ -78,7 +88,8 @@ function tratarErro(err: Error, req: Request, res: Response, next: NextFunction)
     });
 }
 
-app.get('/', responderInicio);
+app.get('/', redirecionarParaLogin);
+app.get('/api', responderInicio);
 app.get('/api/status', responderStatus);
 
 // Rotas da Reuniao 5 (cada arquivo tem as rotas de uma tela)
@@ -90,6 +101,11 @@ app.use(rotasEdicao);
 app.use(rotasDetalhes);
 app.use(rotasComentarios);
 app.use(rotasFeriados);
+
+// As telas (HTML, CSS e JavaScript) sao servidas pelo proprio Express.
+// Assim o sistema inteiro roda com um comando so (npm run dev), sem
+// precisar de outro servidor para abrir os arquivos HTML.
+app.use(express.static(PASTA_TELAS));
 
 // Tratamento de rota inexistente e de erro no final da fila
 app.use(rotaInexistente);
@@ -108,9 +124,8 @@ async function iniciarServidor(): Promise<void> {
     let servidor = app.listen(PORTA, function () {
         console.log('====================================================');
         console.log(' Servidor do FLUXO (PI-II Time 27) iniciado!');
-        console.log(' Rodando em: http://localhost:' + PORTA);
-        console.log(' Rota de teste: http://localhost:' + PORTA + '/');
-        console.log(' Status do banco: http://localhost:' + PORTA + '/api/status');
+        console.log(' Telas: http://localhost:' + PORTA + '/01-login/');
+        console.log(' API:   http://localhost:' + PORTA + '/api/status');
         console.log('====================================================');
     });
 

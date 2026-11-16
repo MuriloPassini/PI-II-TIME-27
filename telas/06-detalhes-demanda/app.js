@@ -248,6 +248,11 @@ function ajustarBotoesDoTopo(demanda) {
         botaoEditar.style.display = 'none';
         botaoCancelar.style.display = 'none';
     }
+
+    // Demanda concluida ainda pode ser editada, mas nao cancelada
+    if (demanda.status === 'Concluída') {
+        botaoCancelar.style.display = 'none';
+    }
 }
 
 // Muda o status da demanda na API

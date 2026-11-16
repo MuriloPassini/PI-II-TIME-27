@@ -118,13 +118,21 @@ npm run db:setup
 
 Esse comando executa, em ordem, `sql/01-criar-tabelas.sql` (schema) e `sql/02-carga-inicial.sql` (usuários dos três perfis, projetos, demandas, comentários e histórico inicial). Ele pode ser executado novamente para resetar o banco ao estado original.
 
-### 4. Rodar a API
+### 4. Rodar o sistema (API + telas)
 
 ```bash
 npm run dev
 ```
 
-A API sobe em `http://localhost:3000`. Para gerar e rodar a versão compilada:
+Esse único comando sobe a API e também serve as telas: o Express entrega os arquivos da pasta `telas/`. Depois abra:
+
+```
+http://localhost:3000/01-login/
+```
+
+A raiz (`http://localhost:3000/`) redireciona para a tela de login. Não é preciso subir outro servidor para os arquivos HTML.
+
+Para gerar e rodar a versão compilada:
 
 ```bash
 npm run build
@@ -132,16 +140,6 @@ npm start
 ```
 
 Confira se o banco respondeu em `GET /api/status`.
-
-### 5. Abrir as telas
-
-As telas precisam de um servidor HTTP simples (não abra o `index.html` direto pelo explorador de arquivos). Na raiz do projeto:
-
-```bash
-npx serve telas
-```
-
-Depois abra o endereço indicado e comece pela tela de login (`01-login`).
 
 ### Contas de teste
 
@@ -159,7 +157,8 @@ As listas vêm no formato `{ "total": ..., "<recurso>": [...] }`, os cadastros n
 
 | Rota | Método | Descrição | Responsável |
 |---|---|---|---|
-| `/` | GET | Resposta simples para conferir que o servidor está no ar | Murilo Passini |
+| `/` | GET | Redireciona para a tela de login (`/01-login/`) | Murilo Passini |
+| `/api` | GET | Resposta simples para conferir que o servidor está no ar | Murilo Passini |
 | `/api/status` | GET | Status do servidor e da conexão com o banco | Murilo Passini |
 | `/login` | POST | Autentica e-mail e senha e devolve o usuário (sem a senha) + token | Murilo Passini |
 | `/logout` | POST | Encerra a sessão do token enviado | Murilo Passini |

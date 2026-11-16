@@ -10,13 +10,14 @@ Antes de abrir qualquer tela, suba o banco e a API:
   4) npm run db:setup    (cria as tabelas e carrega os dados de exemplo)
   5) npm run dev         (API em http://localhost:3000)
 
-Para abrir as telas, sirva a pasta "telas" com um servidor simples:
+Para abrir as telas não precisa de outro servidor: o próprio Express
+entrega os arquivos da pasta "telas". Com a API no ar, abra no navegador:
 
-  npx serve telas
+  http://localhost:3000/01-login/
 
-ou use a extensão "Live Server" do VS Code. Não abra o index.html direto
-pelo explorador de arquivos: em file:// o navegador bloqueia o localStorage
-e as chamadas para a API.
+O endereço http://localhost:3000/ redireciona para a tela de login.
+Não abra o index.html direto pelo explorador de arquivos: em file:// o
+navegador bloqueia o localStorage e as chamadas para a API.
 
 Contas de teste:
 

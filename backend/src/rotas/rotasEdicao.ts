@@ -511,6 +511,16 @@ async function cancelarDemanda(req: Request, res: Response, next: NextFunction):
             return;
         }
 
+        // Pelo escopo do trabalho, so cancela demanda que ainda nao
+        // foi concluida. Demanda concluida fica no historico como esta.
+        if (atual.status === 'Concluída') {
+            res.status(400).json({
+                erro: 'Demanda concluída',
+                mensagem: 'Uma demanda concluída não pode ser cancelada.'
+            });
+            return;
+        }
+
         let pode = await podeGerenciarDemanda(usuario, idPedido);
         if (pode === false) {
             res.status(403).json({

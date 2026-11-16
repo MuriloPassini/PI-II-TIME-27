@@ -21,7 +21,8 @@
 ### ================================================ Reunião 3 (mantidas)
 
 # resposta simples para conferir que o servidor está no ar
-GET {{host}}/
+# (GET / redireciona para a tela de login; os dados da API ficam em /api)
+GET {{host}}/api
 
 ###
 
@@ -380,6 +381,18 @@ Content-Type: application/json
 
 {
     "motivo": "Tentativa repetida."
+}
+
+### 
+
+# cancelar uma demanda concluída (erro 400)
+# a DEM-004 já está concluída no banco de exemplo
+POST {{host}}/demandas/DEM-004/cancelar
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "motivo": "Tentativa de cancelar demanda concluída."
 }
 
 ###
