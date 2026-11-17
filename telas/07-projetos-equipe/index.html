@@ -7,21 +7,6 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="screen-projects">
-  <div id="login" class="login-screen hidden">
-    <div class="login-brand">
-      <div class="brand-mark">◆</div><span>FLUXO</span>
-      <p>Organize as demandas do seu time.</p>
-      <small>Trabalho de PI II - Time 27</small>
-    </div>
-    <form id="login-form" class="login-card">
-      <h1>Bem-vindo de volta</h1><p>Entre na sua conta para continuar.</p>
-      <label>E-mail<input type="email" placeholder="seuemail@empresa.com" required></label>
-      <label>Senha<input type="password" placeholder="••••••••" required></label>
-      <button class="btn primary full">Entrar</button>
-      <small>Protótipo: o login ainda não funciona de verdade.</small>
-    </form>
-  </div>
-
   <div id="app" class="layout">
     <aside class="sidebar">
       <div class="brand"><div class="brand-mark">◆</div><div><b>FLUXO</b><small>CONTROLE DE DEMANDAS</small></div></div>
@@ -44,7 +29,7 @@
         <div class="top-actions"><button class="icon-btn" title="Pesquisar" id="top-search">⌕</button><div class="avatar small">PG</div></div>
       </header>
 
-      <section class="page active" id="page-dashboard">
+      <section class="page" id="page-dashboard">
         <div class="page-heading"><div><p class="rotulo">VISÃO DO WORKSPACE</p><h1>Visão geral</h1><p>Acompanhe o desempenho dos seus projetos.</p></div></div>
         <div class="stats-grid">
           <article class="stat-card"><div class="stat-top"><span>Total de demandas</span><i>▦</i></div><strong>128</strong><small>Em todos os projetos</small></article>
@@ -115,13 +100,15 @@
 
       <section class="page active" id="page-projects">
         <div class="page-heading"><div><p class="rotulo">GERENCIAMENTO</p><h1>Projetos e equipe</h1><p>Consulte os projetos e os membros vinculados.</p></div></div>
-        <div class="project-grid"><article class="panel project-card"><div class="project-icon">⌘</div><span class="status success">Ativo</span><h2>Sistema Web</h2><small>PROJ-001 · Desenvolvimento</small><div class="progress-label"><span>Demandas concluídas</span><b>64%</b></div><div class="progress"><i style="width:64%"></i></div><p>72 demandas cadastradas</p></article><article class="panel project-card"><div class="project-icon">▣</div><span class="status success">Ativo</span><h2>Aplicativo Mobile</h2><small>PROJ-002 · Desenvolvimento</small><div class="progress-label"><span>Demandas concluídas</span><b>48%</b></div><div class="progress"><i style="width:48%"></i></div><p>56 demandas cadastradas</p></article></div>
-        <article class="panel team-panel"><div class="panel-heading"><div><h2>Membros da equipe</h2><p>Usuários previamente cadastrados</p></div><span class="etiqueta">4 membros</span></div><div class="team-list"><div><div class="avatar">PG</div><b>Pedro Gomes</b><span>Administrador</span><span class="status success">Ativo</span></div><div><div class="avatar purple">MC</div><b>Maria Costa</b><span>Líder de Projeto</span><span class="status success">Ativo</span></div><div><div class="avatar green">JS</div><b>João Silva</b><span>Membro da Equipe</span><span class="status success">Ativo</span></div><div><div class="avatar orange">AL</div><b>Ana Lima</b><span>Membro da Equipe</span><span class="status success">Ativo</span></div></div></article>
+        <div class="project-grid" id="project-grid"></div>
+        <article class="panel team-panel"><div class="panel-heading"><div><h2>Membros da equipe</h2><p>Usuários cadastrados no banco</p></div><span class="etiqueta" id="team-total">0 membros</span></div><div class="team-list" id="team-list"></div></article>
+        <p class="nota-demo" id="projects-aviso">Carregando dados da API...</p>
       </section>
       <footer>FLUXO <span>·</span> Protótipo acadêmico de PI II <span>·</span> Time 27</footer>
     </main>
   </div>
   <div class="toast" id="toast"></div>
+  <script src="../comum/api.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
