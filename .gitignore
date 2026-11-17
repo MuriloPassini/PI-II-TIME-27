@@ -3,3 +3,4 @@ dist/
 .env
 *.log
 *.zip
+PI2_Reuniao_*.pdf
