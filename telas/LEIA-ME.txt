@@ -1,0 +1,55 @@
+FLUXO — TELAS (REUNIÃO 5)
+PI II · Time 27
+
+As telas agora conversam com a API do backend (Node + Express + Oracle).
+Antes de abrir qualquer tela, suba o banco e a API:
+
+  1) ligue o Oracle no Docker (veja o README da raiz do projeto);
+  2) cd backend
+  3) npm install
+  4) npm run db:setup    (cria as tabelas e carrega os dados de exemplo)
+  5) npm run dev         (API em http://localhost:3000)
+
+Para abrir as telas não precisa de outro servidor: o próprio Express
+entrega os arquivos da pasta "telas". Com a API no ar, abra no navegador:
+
+  http://localhost:3000/01-login/
+
+O endereço http://localhost:3000/ redireciona para a tela de login.
+Não abra o index.html direto pelo explorador de arquivos: em file:// o
+navegador bloqueia o localStorage e as chamadas para a API.
+
+Contas de teste:
+
+  Administrador     ana.souza@fluxo.com     Admin@2026
+  Líder de Projeto  bruno.lima@fluxo.com    Lider@2026
+  Membro da Equipe  joao.silva@fluxo.com    Membro@2026
+
+Telas e responsáveis:
+
+  01-login ............ Murilo Passini
+  02-dashboard ........ Filipe Sampaio
+  03-demandas ......... Pietro Granzotti
+  04-kanban ........... Cauã Leite
+  05-cadastro-demanda . Matheus Schiavinato
+  06-detalhes-demanda . Nicholas de Castro
+  07-projetos-equipe .. tela estática (não faz parte desta entrega)
+  comum/api.js ........ Murilo Passini (compartilhado por todas as telas)
+
+O que cada tela faz:
+
+  01 - login com e-mail e senha, validações no navegador e mensagem de
+       erro da API (400/401) na própria tela.
+  02 - cartões, gráficos de barras e listas com os números vindos do banco.
+  03 - listagem com busca, filtros e ordenação feitos pela API.
+  04 - quadro kanban separado por status, com botão para avançar o fluxo.
+  05 - cadastro e edição de demanda, com verificação de feriado nacional.
+  06 - detalhes, comentários, histórico, mudança de status e cancelamento
+       com motivo.
+
+O arquivo comum/api.js guarda o token no localStorage, monta as requisições
+e concentra as funções usadas por todas as telas. No zip da entrega, cada
+pasta de integrante leva uma cópia da pasta comum para funcionar sozinha.
+
+O histórico de cada demanda é gravado pelo backend e nunca é apagado: toda
+criação, edição, mudança de status e cancelamento gera uma linha nova.

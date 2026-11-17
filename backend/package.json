@@ -1,0 +1,36 @@
+{
+  "name": "fluxo-backend",
+  "version": "1.0.0",
+  "description": "Servidor backend do FLUXO, sistema de acompanhamento de demandas de desenvolvimento - PI-II Time 27",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "db:setup": "node scripts/executar-sql.js"
+  },
+  "keywords": [
+    "pi2",
+    "engenharia-de-software",
+    "fluxo",
+    "node",
+    "typescript",
+    "express"
+  ],
+  "author": "Equipe PI-II TIME-27",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "oracledb": "^26.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.0",
+    "@types/oracledb": "^26.0.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

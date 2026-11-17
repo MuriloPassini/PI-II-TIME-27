@@ -1,0 +1,505 @@
+# testes/rotas.http — PI2 / Time 27
+# Autor: Equipe PI-II TIME-27
+#
+# Testes das rotas da Reunião 5 (API ligada ao Oracle).
+#
+# Como usar:
+# 1) suba o banco e o servidor (veja o README na raiz do projeto);
+# 2) instale a extensão "REST Client" no VS Code;
+# 3) rode primeiro os três logins abaixo e copie o campo "token" da resposta;
+# 4) cole cada token nas variáveis @tokenAdmin, @tokenLider e @tokenMembro;
+# 5) clique em "Send Request" em cima de cada requisição.
+#
+# As rotas privadas precisam do cabeçalho Authorization: Bearer <token>.
+# Os testes marcados com "(erro)" devem devolver 400, 401, 403 ou 404.
+
+@host = http://localhost:3000
+@tokenAdmin = cole-o-token-do-administrador-aqui
+@tokenLider = cole-o-token-do-lider-aqui
+@tokenMembro = cole-o-token-do-membro-aqui
+
+### ================================================ Reunião 3 (mantidas)
+
+# resposta simples para conferir que o servidor está no ar
+# (GET / redireciona para a tela de login; os dados da API ficam em /api)
+GET {{host}}/api
+
+###
+
+# status do servidor e do banco
+GET {{host}}/api/status
+
+### ======================================== Murilo Passini (01 Login)
+
+# login do administrador (retorna 200 + token)
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza@fluxo.com",
+    "senha": "Admin@2026"
+}
+
+###
+
+# login do líder de projeto (retorna 200 + token)
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "bruno.lima@fluxo.com",
+    "senha": "Lider@2026"
+}
+
+###
+
+# login do membro da equipe (retorna 200 + token)
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "joao.silva@fluxo.com",
+    "senha": "Membro@2026"
+}
+
+###
+
+# login sem a senha (erro 400)
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza@fluxo.com"
+}
+
+###
+
+# login com e-mail fora do formato (erro 400)
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza",
+    "senha": "Admin@2026"
+}
+
+###
+
+# login com senha errada (erro 401)
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza@fluxo.com",
+    "senha": "errada"
+}
+
+###
+
+# usuários cadastrados, sem a senha (retorna 200)
+GET {{host}}/usuarios
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# rota privada sem token (erro 401)
+GET {{host}}/demandas
+
+###
+
+# encerra a sessão do token usado
+POST {{host}}/logout
+Authorization: Bearer {{tokenAdmin}}
+
+### ====================================== Filipe Sampaio (02 Dashboard)
+
+# resumo do painel: totais por status, prioridade e tipo,
+# críticas em aberto e próximas do prazo (retorna 200)
+GET {{host}}/dashboard
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# o mesmo painel visto pelo membro (só as demandas dele)
+GET {{host}}/dashboard
+Authorization: Bearer {{tokenMembro}}
+
+### ====================================== Pietro Granzotti (03 Demandas)
+
+# todas as demandas visíveis para o perfil (retorna 200)
+GET {{host}}/demandas
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# filtro por status (retorna 200)
+GET {{host}}/demandas?status=Aberta
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# filtro por prioridade (retorna 200)
+GET {{host}}/demandas?prioridade=Cr%C3%ADtica
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# filtro por tipo (retorna 200)
+GET {{host}}/demandas?tipo=Documenta%C3%A7%C3%A3o
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# filtro por responsável (retorna 200)
+GET {{host}}/demandas?responsavel=Jo%C3%A3o%20Silva
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# filtro por projeto (retorna 200)
+GET {{host}}/demandas?projeto=API%20de%20Integra%C3%A7%C3%A3o
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# busca por texto no título ou na descrição (retorna 200)
+GET {{host}}/demandas?busca=autentica
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# ordenação por prioridade (Crítica primeiro)
+GET {{host}}/demandas?ordenar=prioridade
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# ordenação por criação (mais recente primeiro)
+GET {{host}}/demandas?ordenar=criacao
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# ordenação por prazo (sem prazo no final)
+GET {{host}}/demandas?ordenar=prazo
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# ordenação pelo fluxo de status
+GET {{host}}/demandas?ordenar=status
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# filtro com valor inválido (erro 400)
+GET {{host}}/demandas?status=Fechada
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# ordenação inválida (erro 400)
+GET {{host}}/demandas?ordenar=nome
+Authorization: Bearer {{tokenAdmin}}
+
+### ============================ Cauã Leite (04 Kanban e 05 Cadastro)
+
+# projetos cadastrados (retorna 200)
+GET {{host}}/projetos
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# cadastro de demanda (retorna 201)
+POST {{host}}/demandas
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "titulo": "Criar tela de ajuda do sistema",
+    "descricao": "Desenvolver uma tela de ajuda com as perguntas mais frequentes dos usuários.",
+    "tipo": "Tarefa",
+    "prioridade": "Média",
+    "projeto": "Sistema Web",
+    "responsavel": "João Silva",
+    "prazo": "2026-12-20"
+}
+
+###
+
+# cadastro sem responsável e sem prazo (retorna 201 como "Não atribuído")
+POST {{host}}/demandas
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "titulo": "Revisar logotipo do aplicativo",
+    "descricao": "Avaliar o logotipo atual do aplicativo e propor ajustes.",
+    "tipo": "Melhoria",
+    "prioridade": "Baixa",
+    "projeto": "Aplicativo Mobile"
+}
+
+###
+
+# cadastro com prazo em feriado nacional (erro 400)
+POST {{host}}/demandas
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "titulo": "Demanda com prazo no Natal",
+    "descricao": "Descrição da demanda de teste com prazo em feriado.",
+    "tipo": "Tarefa",
+    "prioridade": "Média",
+    "projeto": "Sistema Web",
+    "prazo": "2026-12-25"
+}
+
+###
+
+# cadastro com título curto demais (erro 400)
+POST {{host}}/demandas
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "titulo": "oi",
+    "descricao": "Descrição da demanda de teste.",
+    "tipo": "Tarefa",
+    "prioridade": "Média",
+    "projeto": "Sistema Web"
+}
+
+###
+
+# cadastro com projeto que não existe (erro 400)
+POST {{host}}/demandas
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "titulo": "Demanda de um projeto novo",
+    "descricao": "Descrição da demanda de teste.",
+    "tipo": "Tarefa",
+    "prioridade": "Média",
+    "projeto": "Projeto Inexistente"
+}
+
+###
+
+# cadastro com prazo impossível (erro 400)
+POST {{host}}/demandas
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "titulo": "Demanda com prazo impossível",
+    "descricao": "Descrição da demanda de teste.",
+    "tipo": "Tarefa",
+    "prioridade": "Média",
+    "projeto": "Sistema Web",
+    "prazo": "2026-02-31"
+}
+
+###
+
+# edição dos dados da demanda (retorna 200 e atualiza a data de atualização)
+PATCH {{host}}/demandas/DEM-001
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "titulo": "Falha na autenticação de usuários",
+    "descricao": "Usuários não conseguem autenticar em determinadas condições. Ajustar a validação do token.",
+    "prioridade": "Alta",
+    "responsavel": "João Silva",
+    "prazo": "2026-12-18"
+}
+
+###
+
+# edição com prazo em feriado nacional (erro 400)
+PATCH {{host}}/demandas/DEM-001
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "prazo": "2026-12-25"
+}
+
+###
+
+# mudança de status permitida (Aberta -> Em andamento)
+PATCH {{host}}/demandas/DEM-001/status
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "status": "Em andamento"
+}
+
+###
+
+# transição não permitida (Em andamento -> Concluída, erro 400)
+PATCH {{host}}/demandas/DEM-001/status
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "status": "Concluída"
+}
+
+###
+
+# status "Cancelada" pela rota de status (erro 400: use /cancelar)
+PATCH {{host}}/demandas/DEM-001/status
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "status": "Cancelada"
+}
+
+###
+
+# cancelamento com motivo, sem apagar o registro (retorna 200)
+POST {{host}}/demandas/DEM-002/cancelar
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "motivo": "A demanda foi substituída por outra atividade do projeto."
+}
+
+###
+
+# cancelar uma demanda já cancelada (erro 400)
+POST {{host}}/demandas/DEM-002/cancelar
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "motivo": "Tentativa repetida."
+}
+
+### 
+
+# cancelar uma demanda concluída (erro 400)
+# a DEM-004 já está concluída no banco de exemplo
+POST {{host}}/demandas/DEM-004/cancelar
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "motivo": "Tentativa de cancelar demanda concluída."
+}
+
+###
+
+# membro tentando editar uma demanda (erro 403)
+PATCH {{host}}/demandas/DEM-001
+Authorization: Bearer {{tokenMembro}}
+Content-Type: application/json
+
+{
+    "prioridade": "Baixa"
+}
+
+###
+
+# membro tentando cancelar uma demanda (erro 403)
+POST {{host}}/demandas/DEM-001/cancelar
+Authorization: Bearer {{tokenMembro}}
+Content-Type: application/json
+
+{
+    "motivo": "Teste de permissão."
+}
+
+### ============================ Nicholas de Castro (06 Detalhes e Histórico)
+
+# detalhes de uma demanda pelo id (retorna 200)
+GET {{host}}/demandas/DEM-001
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# demanda que não existe (erro 404)
+GET {{host}}/demandas/DEM-999
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# demanda de outro projeto vista por um membro sem acesso (erro 404)
+GET {{host}}/demandas/DEM-001
+Authorization: Bearer {{tokenMembro}}
+
+###
+
+# histórico de alterações da demanda, do mais novo para o mais antigo (retorna 200)
+GET {{host}}/demandas/DEM-001/historico
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# comentários de uma demanda (retorna 200)
+GET {{host}}/demandas/DEM-001/comentarios
+Authorization: Bearer {{tokenAdmin}}
+
+### ============================ Matheus Schiavinato (06 Comentários e Feriados)
+
+# novo comentário na demanda (retorna 201; o autor vem do token)
+POST {{host}}/demandas/DEM-001/comentarios
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "texto": "Vamos acompanhar essa demanda na reunião de sexta."
+}
+
+###
+
+# comentário com texto curto demais (erro 400)
+POST {{host}}/demandas/DEM-001/comentarios
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "texto": "oi"
+}
+
+###
+
+# comentário em demanda que não existe (erro 404)
+POST {{host}}/demandas/DEM-999/comentarios
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "texto": "Comentário de teste."
+}
+
+###
+
+# feriados nacionais de 2026 vindos da BrasilAPI (retorna 200)
+GET {{host}}/feriados?ano=2026
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# conferir uma data que é feriado (retorna feriado: true)
+GET {{host}}/feriados/verificar?data=2026-12-25
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# conferir uma data normal (retorna feriado: false)
+GET {{host}}/feriados/verificar?data=2026-12-22
+Authorization: Bearer {{tokenAdmin}}
+
+###
+
+# conferir uma data inválida (erro 400)
+GET {{host}}/feriados/verificar?data=25/12/2026
+Authorization: Bearer {{tokenAdmin}}
